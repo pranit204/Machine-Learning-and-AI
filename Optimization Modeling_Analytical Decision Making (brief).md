@@ -20,6 +20,8 @@ Safety stock requirements are such that week-ending inventory must provide for a
 You should prepare a production and changeover schedule report for the Kingston Manufacturing management to minimize total costs for the next eight weeks.
 
 
+
+
 Problem 2: Assigning Technicians to Shifts
 
 You are planning the staffing of maintenance technicians at a printing plant which operates on three shifts. You can use up to 8 possible technicians, each of whom can be assigned to at most one shift. The costs of assigning the technicians and their certified categories of competency are as follows:
@@ -38,6 +40,8 @@ Technician	Cost	Cost	Cost	1	2	3	4
 For example, it would cost $280 to assign technician 1 to shift 1, $290 to assign her to shift 2, and $300 to assign her to shift 3, and she is certified in categories 1, 2, and 4. More than one technician may be assigned to each shift. In each category, you need at least one certified technician assigned to each shift.
 
 Determine the least expensive way to meet your maintenance technician staffing needs.
+
+
 
 
 Problem 3: Sitting Sales Representatives
@@ -62,6 +66,8 @@ District 4	60
 
 A fractional number of representatives in a district is not permissible. 
 Determine how many representatives should be assigned to each district.
+
+
 
 
 Problem 4: The Wild Turkey Company 
