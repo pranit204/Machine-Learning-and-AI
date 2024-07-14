@@ -1,6 +1,5 @@
-Question 1
+## Question 1
 
-## Instructions
 
 Uncle Steve has recently opened a new credit union in Kingston, named *Uncle Steve's Credit Union*. He plans to disrupt the local market by instaneously providing credit to customers.
 The first step in Uncle Steve's master plan is to create a model to predict whether an application has *good risk* or *bad risk*. He has outsourced the creation of this model to you.
@@ -16,7 +15,7 @@ To examine the effects of the various ML stages, you are to create the model sev
 5. Finally, using your findings from the previous steps, estimate how well your model will work in production. Use the testing data (our "future, unseen data") from step 0. Transform the data as appropriate (easy if you've built a pipeline, a little more difficult if not), use the model from step 4 to get predictions, and measure the performance. How well did we do?
 
 
-Question 2 
+## Question 2 
 
 ## Instructions
 
