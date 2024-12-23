@@ -1,0 +1,56 @@
+Summary of Analysis for the Toronto Police Crime Dataset
+1. Data Cleaning
+Column Selection:
+Focused on relevant columns, such as OCC_YEAR, OCC_MONTH, OCC_DAY, OFFENCE, LAT_WGS84, and LONG_WGS84.
+Missing Values:
+Replaced missing values in OCC_YEAR, OCC_MONTH, and OCC_DAY with corresponding values from REPORT_YEAR, REPORT_MONTH, and REPORT_DAY.
+Data Type Formatting:
+Converted months from text (e.g., "January") to numeric format.
+Ensured all date and time-related columns were properly formatted as integers.
+Datetime Features:
+Created REPORT_DATETIME and OCCURED_DATETIME columns to analyze temporal patterns.
+Data Filtering:
+Filtered data for OCC_YEAR >= 2014 to focus on recent crime trends.
+
+2. Exploratory Data Analysis (EDA)
+Temporal Analysis:
+Identified trends in crime counts by year and month.
+Calculated the average and median delay (Days_Difference) between crime occurrence and reporting.
+Neighborhood Insights:
+Listed the top 20 neighborhoods (NEIGHBOURHOOD_158) with the highest crime counts.
+Analyzed crime distribution across neighborhoods for specific offenses like Assault and B&E.
+Offense Trends:
+Created pivot tables to analyze crime frequencies and growth rates across years and months.
+Highlighted seasonal trends by calculating the percentage of crimes by month for each offense type.
+Correlation Analysis:
+Investigated the relationship between OCC_HOUR (time of day) and the number of crimes.
+
+3. Machine Learning Tasks
+Task 1: Crime Hotspot Detection (Clustering)
+Goal: Identify geographical crime hotspots.
+Techniques Used:
+Cleaned latitude and longitude data to remove invalid entries (e.g., 0 or out-of-range values).
+Applied DBSCAN clustering to detect dense areas of crimes.
+Visualized clusters to highlight hotspots.
+Task 2: Predicting Crime Type (OFFENCE)
+Goal: Predict the type of crime based on temporal, spatial, and categorical features.
+Techniques Used:
+Selected features like OCC_YEAR, OCC_HOUR, NEIGHBOURHOOD_158, and MCI_CATEGORY.
+Encoded categorical features using OneHotEncoder and scaled numerical features.
+Built a Logistic Regression model:
+Achieved classification metrics (e.g., accuracy, precision, recall).
+Analyzed the confusion matrix to evaluate predictions.
+Task 3: Temporal Crime Trends
+Goal: Analyze crime trends over time.
+Techniques Used:
+Aggregated crime data by year and month to identify temporal trends.
+Plotted yearly and monthly crime trends using line charts to highlight patterns.
+
+4. Insights and Observations
+Temporal Trends:
+Seasonal variations were observed in crime counts, with some offenses peaking in specific months.
+A noticeable delay was found between crime occurrence and reporting.
+Hotspot Analysis:
+Certain neighborhoods and geographical areas were identified as crime hotspots, allowing for targeted interventions.
+Modeling:
+The Logistic Regression model provided insights into predicting crime types, though performance may improve with additional features or advanced models.
