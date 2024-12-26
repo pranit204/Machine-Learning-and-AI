@@ -1,5 +1,5 @@
 **Project Overview**
-This project analyzes historical results from the Ultimate Fighting Championship (UFC) to uncover patterns, trends, and insights into fighters' performances. Using a combination of data analysis, visualization, and predictive modeling, the project aims to answer key questions about UFC match outcomes and fighter dynamics.
+This project analyzes historical results from the Ultimate Fighting Championship (UFC) to uncover patterns, trends, and insights into fighters' performances. One of the primary goals is to track the percentage of times the betting favorite won between 2010 and 2020. Using a combination of data analysis, visualization, and predictive modeling, the project aims to answer key questions about UFC match outcomes and fighter dynamics.
 
 **Code Functionality**
 
