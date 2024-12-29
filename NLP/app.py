@@ -40,9 +40,11 @@ st.sidebar.write("---")
 st.sidebar.write("**Created by [Pranit Sanghavi](https://github.com/pranit204)**")
 
 # Load Pre-trained Model and Metrics
-model_file = "ensemble_model.pkl"
-vectorizer_file = "tfidf_vectorizer.pkl"
-evaluation_metrics_file = "evaluation_metrics.pkl"
+# File paths adjusted to point to the NLP folder
+model_file = "./NLP/ensemble_model.pkl"
+vectorizer_file = "./NLP/tfidf_vectorizer.pkl"
+evaluation_metrics_file = "./NLP/evaluation_metrics.pkl"
+
 
 try:
     model = joblib.load(model_file)
