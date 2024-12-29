@@ -9,26 +9,28 @@ import os
 st.title("Sentiment Analysis App")
 st.write("This app predicts the sentiment of text as Positive or Negative using a pre-trained ensemble model.")
 
-# Sentiment Prediction
+# Sentiment Prediction Section at the Top
 st.header("Sentiment Prediction")
 user_input = st.text_area("Enter text for sentiment prediction", "")
 
 if st.button("Predict Sentiment"):
     if user_input.strip():
-        # Vectorize the input
-        input_tfidf = tfidf.transform([user_input])
+        try:
+            # Vectorize the input
+            input_tfidf = tfidf.transform([user_input])
 
-        # Predict sentiment and confidence
-        prediction = model.predict(input_tfidf)[0]
-        prediction_proba = model.predict_proba(input_tfidf)
-        confidence = max(prediction_proba[0])
+            # Predict sentiment and confidence
+            prediction = model.predict(input_tfidf)[0]
+            prediction_proba = model.predict_proba(input_tfidf)
+            confidence = max(prediction_proba[0])
 
-        # Display result
-        st.write(f"**Predicted Sentiment:** {'Positive' if prediction == 1 else 'Negative'}")
-        st.write(f"**Confidence:** {confidence:.2f}")
+            # Display result
+            st.write(f"**Predicted Sentiment:** {'Positive' if prediction == 1 else 'Negative'}")
+            st.write(f"**Confidence:** {confidence:.2f}")
+        except Exception as e:
+            st.error(f"Prediction failed: {e}")
     else:
         st.error("Please enter some text for prediction.")
-
 
 # Sidebar for configuration
 st.sidebar.header("Configuration")
@@ -53,16 +55,11 @@ st.sidebar.write(f"TF-IDF Vectorizer Found: {'True' if os.path.exists('./Interac
 st.sidebar.write(f"Ensemble Model Found: {'True' if os.path.exists('./Interactive_NLP_Streamlit_Application/ensemble_model.pkl') else 'False'}")
 st.sidebar.write(f"Evaluation Metrics Found: {'True' if os.path.exists('./Interactive_NLP_Streamlit_Application/evaluation_metrics.pkl') else 'False'}")
 
-# Signature in the sidebar
-st.sidebar.write("---")
-st.sidebar.write("**Created by [Pranit Sanghavi](https://github.com/pranit204)**")
-
 # Load Pre-trained Model and Metrics
-# File paths adjusted to point to the NLP folder
+# File paths adjusted to point to the correct folder
 model_file = "./Interactive_NLP_Streamlit_Application/ensemble_model.pkl"
 vectorizer_file = "./Interactive_NLP_Streamlit_Application/tfidf_vectorizer.pkl"
 evaluation_metrics_file = "./Interactive_NLP_Streamlit_Application/evaluation_metrics.pkl"
-
 
 try:
     model = joblib.load(model_file)
@@ -102,8 +99,6 @@ plt.title('Confidence Score Distribution')
 plt.xlabel('Confidence')
 plt.ylabel('Frequency')
 st.pyplot(fig)
-
-
 
 # Footer signature
 st.markdown("---")
