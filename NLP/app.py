@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
+import os
+st.sidebar.write(f"Current Working Directory: {os.getcwd()}")
+
 # Title and Description
 st.title("Sentiment Analysis App")
 st.write("This app predicts the sentiment of text as Positive or Negative using a pre-trained ensemble model.")
