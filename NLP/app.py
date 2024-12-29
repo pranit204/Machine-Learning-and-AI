@@ -41,6 +41,15 @@ model_file = "ensemble_model.pkl"
 vectorizer_file = "tfidf_vectorizer.pkl"
 evaluation_metrics_file = "evaluation_metrics.pkl"
 
+import os
+
+if os.path.exists(model_file) and os.path.exists(vectorizer_file):
+    st.sidebar.write("All required files are found.")
+    model = joblib.load(model_file)
+    tfidf = joblib.load(vectorizer_file)
+else:
+    st.sidebar.error("Required files are missing. Please check deployment.")
+
 model = joblib.load(model_file)
 tfidf = joblib.load(vectorizer_file)
 metrics = joblib.load(evaluation_metrics_file)
