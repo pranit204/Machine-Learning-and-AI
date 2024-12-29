@@ -20,7 +20,7 @@ st.sidebar.write("Use this section to upload datasets and train the model.")
 
 # Signature in the sidebar
 st.sidebar.write("---")
-st.sidebar.write("**Created by [Your Name](https://github.com/yourusername)**")
+st.sidebar.write("**Created by [Pranit Sanghavi](https://github.com/pranit204)**")
 
 # Upload Training Data
 train_file = st.sidebar.file_uploader("Upload Training Data (CSV)", type="csv")
@@ -163,5 +163,5 @@ if st.button("Predict Sentiment"):
 
 # Footer signature
 st.markdown("---")
-st.markdown("**Created by [Your Name](https://github.com/yourusername)**")
-st.markdown("Reach out via [LinkedIn](https://www.linkedin.com/in/yourprofile/) or [Email](mailto:your_email@example.com).")
+st.markdown("**Created by [Pranit Sanghavi](https://github.com/pranit204)**")
+st.markdown("Reach out via [LinkedIn](www.linkedin.com/in/pranit-sanghavi) or [Email](mailto:pranit.careers@gmail.com).")
