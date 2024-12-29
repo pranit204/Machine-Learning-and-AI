@@ -4,7 +4,7 @@ This interactive Streamlit app predicts the sentiment of input text as Positive 
 
 **Cloud Setup:**
 
-The app is deployed and live on Streamlit Cloud. Access the live demo here: https://machine-learning-and-ai-4muysgpxef4nbknvg7unex.streamlit.app/
+The app is deployed and live on Streamlit Cloud. Access the live demo here: https://pranit204-machi-interactive-nlp-streamlit-applicationapp-liu0ja.streamlit.app/
 
 **Key Features:**
 
@@ -49,7 +49,3 @@ Contact
 
 Created by [Pranit Sanghavi](https://github.com/pranit204)
 Reach out via [LinkedIn](https://www.linkedin.com/in/pranit-sanghavi) or [Email](mailto:pranit.careers@gmail.com).
-
-
-
-
