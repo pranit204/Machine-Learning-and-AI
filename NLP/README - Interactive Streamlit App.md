@@ -2,11 +2,11 @@
 
 This interactive Streamlit app predicts the sentiment of input text as Positive or Negative using a pre-trained ensemble model. It also provides evaluation metrics and visualizations to showcase model performance.
 
-**Cloud Setup**
+**Cloud Setup:**
 
 The app is deployed on Streamlit Cloud. Access the live demo here: https://machine-learning-and-ai-4muysgpxef4nbknvg7unex.streamlit.app/
 
-**Key Features**
+**Key Features:**
 
 Sentiment Prediction:
 Input text is classified as Positive or Negative.
