@@ -11,7 +11,7 @@ st.write("This app predicts the sentiment of text as Positive or Negative using 
 
 # Sidebar for configuration
 st.sidebar.header("Configuration")
-st.sidebar.write("Use this section to check the status of pre-trained models. For your convenience, the model has already been pre-trained, so there’s no need to re-upload the datasets.")
+st.sidebar.write("Use this section to check the status of pre-trained models. For your convenience, the model has already been pre-trained, so there’s no need to re-upload datasets.")
 
 # Enhanced Sidebar Information
 st.sidebar.header("Application Overview")
@@ -41,18 +41,17 @@ model_file = "ensemble_model.pkl"
 vectorizer_file = "tfidf_vectorizer.pkl"
 evaluation_metrics_file = "evaluation_metrics.pkl"
 
-import os
-
-if os.path.exists(model_file) and os.path.exists(vectorizer_file):
-    st.sidebar.write("All required files are found.")
+try:
     model = joblib.load(model_file)
     tfidf = joblib.load(vectorizer_file)
-else:
-    st.sidebar.error("Required files are missing. Please check deployment.")
+    metrics = joblib.load(evaluation_metrics_file)
 
-model = joblib.load(model_file)
-tfidf = joblib.load(vectorizer_file)
-metrics = joblib.load(evaluation_metrics_file)
+    # Safety check for metrics structure
+    if not all(key in metrics for key in ['accuracy', 'classification_report', 'confusion_matrix', 'confidence_scores']):
+        raise ValueError("Evaluation metrics file is invalid or incomplete.")
+except Exception as e:
+    st.error(f"Error loading pre-trained files: {e}")
+    st.stop()
 
 # Display Evaluation Metrics
 st.header("Evaluation Metrics")
