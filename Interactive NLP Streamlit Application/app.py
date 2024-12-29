@@ -49,9 +49,9 @@ This application predicts sentiment as Positive or Negative using a pre-trained 
 # Debugging Information
 st.sidebar.write("---")
 st.sidebar.write("**Debug Info:**")
-st.sidebar.write(f"TF-IDF Vectorizer Found: {'True' if os.path.exists('./NLP/tfidf_vectorizer.pkl') else 'False'}")
-st.sidebar.write(f"Ensemble Model Found: {'True' if os.path.exists('./NLP/ensemble_model.pkl') else 'False'}")
-st.sidebar.write(f"Evaluation Metrics Found: {'True' if os.path.exists('./NLP/evaluation_metrics.pkl') else 'False'}")
+st.sidebar.write(f"TF-IDF Vectorizer Found: {'True' if os.path.exists('./Interactive NLP Streamlit Application/tfidf_vectorizer.pkl') else 'False'}")
+st.sidebar.write(f"Ensemble Model Found: {'True' if os.path.exists('./Interactive NLP Streamlit Application/ensemble_model.pkl') else 'False'}")
+st.sidebar.write(f"Evaluation Metrics Found: {'True' if os.path.exists('./Interactive NLP Streamlit Application/evaluation_metrics.pkl') else 'False'}")
 
 # Signature in the sidebar
 st.sidebar.write("---")
@@ -59,9 +59,9 @@ st.sidebar.write("**Created by [Pranit Sanghavi](https://github.com/pranit204)**
 
 # Load Pre-trained Model and Metrics
 # File paths adjusted to point to the NLP folder
-model_file = "./NLP/ensemble_model.pkl"
-vectorizer_file = "./NLP/tfidf_vectorizer.pkl"
-evaluation_metrics_file = "./NLP/evaluation_metrics.pkl"
+model_file = "./Interactive NLP Streamlit Application/ensemble_model.pkl"
+vectorizer_file = "./Interactive NLP Streamlit Application/tfidf_vectorizer.pkl"
+evaluation_metrics_file = "./Interactive NLP Streamlit Application/evaluation_metrics.pkl"
 
 
 try:
