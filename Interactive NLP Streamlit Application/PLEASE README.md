@@ -31,7 +31,7 @@ Combines Logistic Regression and SVM using a soft voting mechanism.
 
 File Structure
 
-NLP
+Interactive NLP Streamlit Application
 
 ├── app.py                     # Streamlit app script
 
