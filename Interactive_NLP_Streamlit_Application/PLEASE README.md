@@ -2,22 +2,22 @@
 
 This interactive Streamlit app predicts the sentiment of input text as Positive or Negative using a pre-trained ensemble model. It also provides evaluation metrics and visualizations to showcase model performance.
 
-**Cloud Setup:**
+## **Cloud Setup:**
 
 The app is deployed and live on Streamlit Cloud. Access the live demo here: https://pranit204-machi-interactive-nlp-streamlit-applicationapp-liu0ja.streamlit.app/
 
-**Key Features:**
+## **Key Features:**
 
 Sentiment Prediction:
 Input text is classified as Positive or Negative.
 Provides a confidence score for each prediction.
 
-**Pre-Trained Model:**
+## **Pre-Trained Model:**
 
 The model has been pre-trained for user convenience.
 No need to upload datasets or retrain the model.
 
-**Evaluation Metrics:**
+## **Evaluation Metrics:**
 
 Model Accuracy: 78%
 Includes:
@@ -25,11 +25,11 @@ Classification Report
 Confusion Matrix
 Confidence Score Distribution
 
-**Ensemble Model:**
+## **Ensemble Model:**
 
 Combines Logistic Regression and SVM using a soft voting mechanism.
 
-**File Structure**
+## **File Structure**
 
 Interactive NLP Streamlit Application
 
@@ -46,7 +46,7 @@ Interactive NLP Streamlit Application
 ├── requirements.txt           # Python dependencies
 
 
-**Contact**
+# **Contact**
 
 Created by [Pranit Sanghavi](https://github.com/pranit204)
 
