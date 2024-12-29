@@ -5,12 +5,30 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-import os
-st.sidebar.write(f"Current Working Directory: {os.getcwd()}")
-
 # Title and Description
 st.title("Sentiment Analysis App")
 st.write("This app predicts the sentiment of text as Positive or Negative using a pre-trained ensemble model.")
+
+# Sentiment Prediction
+st.header("Sentiment Prediction")
+user_input = st.text_area("Enter text for sentiment prediction", "")
+
+if st.button("Predict Sentiment"):
+    if user_input.strip():
+        # Vectorize the input
+        input_tfidf = tfidf.transform([user_input])
+
+        # Predict sentiment and confidence
+        prediction = model.predict(input_tfidf)[0]
+        prediction_proba = model.predict_proba(input_tfidf)
+        confidence = max(prediction_proba[0])
+
+        # Display result
+        st.write(f"**Predicted Sentiment:** {'Positive' if prediction == 1 else 'Negative'}")
+        st.write(f"**Confidence:** {confidence:.2f}")
+    else:
+        st.error("Please enter some text for prediction.")
+
 
 # Sidebar for configuration
 st.sidebar.header("Configuration")
@@ -85,25 +103,7 @@ plt.xlabel('Confidence')
 plt.ylabel('Frequency')
 st.pyplot(fig)
 
-# Sentiment Prediction
-st.header("Sentiment Prediction")
-user_input = st.text_area("Enter text for sentiment prediction", "")
 
-if st.button("Predict Sentiment"):
-    if user_input.strip():
-        # Vectorize the input
-        input_tfidf = tfidf.transform([user_input])
-
-        # Predict sentiment and confidence
-        prediction = model.predict(input_tfidf)[0]
-        prediction_proba = model.predict_proba(input_tfidf)
-        confidence = max(prediction_proba[0])
-
-        # Display result
-        st.write(f"**Predicted Sentiment:** {'Positive' if prediction == 1 else 'Negative'}")
-        st.write(f"**Confidence:** {confidence:.2f}")
-    else:
-        st.error("Please enter some text for prediction.")
 
 # Footer signature
 st.markdown("---")
