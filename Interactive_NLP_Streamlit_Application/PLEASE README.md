@@ -1,6 +1,6 @@
 # **Sentiment Analysis App**
 
-This interactive Streamlit app predicts the sentiment of user input text as Positive or Negative using a pre-trained ensemble model. It also provides evaluation metrics and visualizations to showcase model performance.
+This interactive Streamlit app predicts the sentiment of user input text as Positive or Negative using a pre-trained ensemble model. It also provides evaluation metrics and visualizations to showcase model performance. Some example inputs can include 'The movie was awesome!', 'The food was awful.'
 
 ## **Cloud Setup:**
 
