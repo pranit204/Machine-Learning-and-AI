@@ -3,6 +3,8 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader, Dataset
 from transformers import BertTokenizer, BertForSequenceClassification
+model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
+tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 from torch.optim import AdamW
 from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix
 import matplotlib.pyplot as plt
