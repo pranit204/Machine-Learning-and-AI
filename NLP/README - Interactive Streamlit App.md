@@ -31,13 +31,18 @@ Combines Logistic Regression and SVM using a soft voting mechanism.
 
 File Structure
 
-NLP/
-│
+NLP
+
 ├── app.py                     # Streamlit app script
+
 ├── ensemble_model.pkl         # Pre-trained ensemble model
+
 ├── tfidf_vectorizer.pkl       # Pre-trained TF-IDF vectorizer
+
 ├── evaluation_metrics.pkl     # Pre-saved evaluation metrics
+
 ├── README.md                  # Project documentation
+
 ├── requirements.txt           # Python dependencies
 
 Contact
