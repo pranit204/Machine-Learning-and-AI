@@ -21,9 +21,7 @@ No need to upload datasets or retrain the model.
 
 Model Accuracy: 78%
 Includes:
-Classification Report
-Confusion Matrix
-Confidence Score Distribution
+Classification Report, Confusion Matrix, Confidence Score Distribution
 
 ## **Ensemble Model:**
 
