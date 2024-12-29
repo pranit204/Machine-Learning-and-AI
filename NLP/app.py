@@ -10,6 +10,11 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.model_selection import GridSearchCV, train_test_split
 
+import os
+st.sidebar.write("Debug Info:")
+st.sidebar.write("TF-IDF Vectorizer Found:", os.path.exists("tfidf_vectorizer.pkl"))
+st.sidebar.write("Ensemble Model Found:", os.path.exists("ensemble_model.pkl"))
+
 # Title and Description
 st.title("Sentiment Analysis App")
 st.write("This app predicts the sentiment of text as Positive or Negative using an ensemble model. Train a new model or use a pre-trained one for predictions.")
