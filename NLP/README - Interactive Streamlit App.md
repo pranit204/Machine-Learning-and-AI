@@ -4,7 +4,7 @@ This interactive Streamlit app predicts the sentiment of input text as Positive 
 
 **Cloud Setup:**
 
-The app is deployed on Streamlit Cloud. Access the live demo here: https://machine-learning-and-ai-4muysgpxef4nbknvg7unex.streamlit.app/
+The app is deployed and live on Streamlit Cloud. Access the live demo here: https://machine-learning-and-ai-4muysgpxef4nbknvg7unex.streamlit.app/
 
 **Key Features:**
 
