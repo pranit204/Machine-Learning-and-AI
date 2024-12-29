@@ -9,8 +9,8 @@ The app is deployed and live on Streamlit Cloud. Access the live demo here: http
 **Key Features:**
 
 Sentiment Prediction:
--Input text is classified as Positive or Negative.
--Provides a confidence score for each prediction.
+Input text is classified as Positive or Negative.
+Provides a confidence score for each prediction.
 
 **Pre-Trained Model:**
 
@@ -21,9 +21,9 @@ No need to upload datasets or retrain the model.
 
 Model Accuracy: 78%
 Includes:
--Classification Report
--Confusion Matrix
--Confidence Score Distribution
+Classification Report
+Confusion Matrix
+Confidence Score Distribution
 
 **Ensemble Model:**
 
