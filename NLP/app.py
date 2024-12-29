@@ -31,9 +31,9 @@ This application predicts sentiment as Positive or Negative using a pre-trained 
 # Debugging Information
 st.sidebar.write("---")
 st.sidebar.write("**Debug Info:**")
-st.sidebar.write(f"TF-IDF Vectorizer Found: {'True' if os.path.exists('tfidf_vectorizer.pkl') else 'False'}")
-st.sidebar.write(f"Ensemble Model Found: {'True' if os.path.exists('ensemble_model.pkl') else 'False'}")
-st.sidebar.write(f"Evaluation Metrics Found: {'True' if os.path.exists('evaluation_metrics.pkl') else 'False'}")
+st.sidebar.write(f"TF-IDF Vectorizer Found: {'True' if os.path.exists('./NLP/tfidf_vectorizer.pkl') else 'False'}")
+st.sidebar.write(f"Ensemble Model Found: {'True' if os.path.exists('./NLP/ensemble_model.pkl') else 'False'}")
+st.sidebar.write(f"Evaluation Metrics Found: {'True' if os.path.exists('./NLP/evaluation_metrics.pkl') else 'False'}")
 
 # Signature in the sidebar
 st.sidebar.write("---")
