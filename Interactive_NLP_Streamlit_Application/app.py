@@ -9,7 +9,25 @@ import os
 st.title("Sentiment Analysis App")
 st.write("This app predicts the sentiment of text as Positive or Negative using a pre-trained ensemble model.")
 
-# Sentiment Prediction Section at the Top
+# Load Pre-trained Model and Metrics
+# File paths adjusted to point to the correct folder
+model_file = "./Interactive_NLP_Streamlit_Application/ensemble_model.pkl"
+vectorizer_file = "./Interactive_NLP_Streamlit_Application/tfidf_vectorizer.pkl"
+evaluation_metrics_file = "./Interactive_NLP_Streamlit_Application/evaluation_metrics.pkl"
+
+try:
+    model = joblib.load(model_file)
+    tfidf = joblib.load(vectorizer_file)
+    metrics = joblib.load(evaluation_metrics_file)
+
+    # Safety check for metrics structure
+    if not all(key in metrics for key in ['accuracy', 'classification_report', 'confusion_matrix', 'confidence_scores']):
+        raise ValueError("Evaluation metrics file is invalid or incomplete.")
+except Exception as e:
+    st.error(f"Error loading pre-trained files: {e}")
+    st.stop()
+
+# Sentiment Prediction Section (moved below model loading)
 st.header("Sentiment Prediction")
 user_input = st.text_area("Enter text for sentiment prediction", "")
 
@@ -54,24 +72,6 @@ st.sidebar.write("**Debug Info:**")
 st.sidebar.write(f"TF-IDF Vectorizer Found: {'True' if os.path.exists('./Interactive_NLP_Streamlit_Application/tfidf_vectorizer.pkl') else 'False'}")
 st.sidebar.write(f"Ensemble Model Found: {'True' if os.path.exists('./Interactive_NLP_Streamlit_Application/ensemble_model.pkl') else 'False'}")
 st.sidebar.write(f"Evaluation Metrics Found: {'True' if os.path.exists('./Interactive_NLP_Streamlit_Application/evaluation_metrics.pkl') else 'False'}")
-
-# Load Pre-trained Model and Metrics
-# File paths adjusted to point to the correct folder
-model_file = "./Interactive_NLP_Streamlit_Application/ensemble_model.pkl"
-vectorizer_file = "./Interactive_NLP_Streamlit_Application/tfidf_vectorizer.pkl"
-evaluation_metrics_file = "./Interactive_NLP_Streamlit_Application/evaluation_metrics.pkl"
-
-try:
-    model = joblib.load(model_file)
-    tfidf = joblib.load(vectorizer_file)
-    metrics = joblib.load(evaluation_metrics_file)
-
-    # Safety check for metrics structure
-    if not all(key in metrics for key in ['accuracy', 'classification_report', 'confusion_matrix', 'confidence_scores']):
-        raise ValueError("Evaluation metrics file is invalid or incomplete.")
-except Exception as e:
-    st.error(f"Error loading pre-trained files: {e}")
-    st.stop()
 
 # Display Evaluation Metrics
 st.header("Evaluation Metrics")
