@@ -22,11 +22,7 @@ st.sidebar.write("Use this section to upload datasets and train the model.")
 st.sidebar.write("---")
 st.sidebar.write("**Created by [Pranit Sanghavi](https://github.com/pranit204)**")
 
-# Upload Training Data
-train_file = st.sidebar.file_uploader("Upload Training Data (CSV)", type="csv")
-test_file = st.sidebar.file_uploader("Upload Test Data (CSV)", type="csv")
-
-# Model and Vectorizer
+# Model and Vectorizer Files
 model_file = "ensemble_model.pkl"
 vectorizer_file = "tfidf_vectorizer.pkl"
 model = None
@@ -39,6 +35,10 @@ try:
     st.sidebar.write("Pre-trained model and vectorizer loaded successfully.")
 except FileNotFoundError:
     st.sidebar.write("No pre-trained model found. Please train a model first.")
+
+# Upload Training Data
+train_file = st.sidebar.file_uploader("Upload Training Data (CSV)", type="csv")
+test_file = st.sidebar.file_uploader("Upload Test Data (CSV)", type="csv")
 
 # Train a New Model
 if st.sidebar.button("Train Model"):
