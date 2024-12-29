@@ -1,195 +1,158 @@
 import streamlit as st
 import pandas as pd
-import torch
-from torch.utils.data import DataLoader, Dataset
-from transformers import BertTokenizer, BertForSequenceClassification
-model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
-tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-from torch.optim import AdamW
-from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix
+import joblib
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud
-import numpy as np
-import random
+import seaborn as sns
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import VotingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.model_selection import GridSearchCV, train_test_split
 
-# Title
-st.title("Sentiment Analysis with BERT")
+# Title and Description
+st.title("Sentiment Analysis App")
+st.write("This app predicts the sentiment of text as Positive or Negative using an ensemble model. Train a new model or use a pre-trained one for predictions.")
 
-# Ensure reproducibility
-RANDOM_STATE = 42
-torch.manual_seed(RANDOM_STATE)
-np.random.seed(RANDOM_STATE)
-random.seed(RANDOM_STATE)
-torch.cuda.manual_seed_all(RANDOM_STATE)
+# Sidebar for configuration
+st.sidebar.header("Configuration")
+st.sidebar.write("Use this section to upload datasets and train the model.")
 
-# Device setup
-device_type = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-st.write(f"Computation running on: {device_type}")
+# Upload Training Data
+train_file = st.sidebar.file_uploader("Upload Training Data (CSV)", type="csv")
+test_file = st.sidebar.file_uploader("Upload Test Data (CSV)", type="csv")
 
-# Load Pretrained BERT Model and Tokenizer
-@st.cache_resource
-def load_model_and_tokenizer():
-    tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-    model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)  # Binary classification
-    return tokenizer, model
+# Model and Vectorizer
+model_file = "ensemble_model.pkl"
+vectorizer_file = "tfidf_vectorizer.pkl"
+model = None
+tfidf = None
 
-tokenizer, model = load_model_and_tokenizer()
-model.to(device_type)
+# Check if pre-trained model exists
+try:
+    tfidf = joblib.load(vectorizer_file)
+    model = joblib.load(model_file)
+    st.sidebar.write("Pre-trained model and vectorizer loaded successfully.")
+except FileNotFoundError:
+    st.sidebar.write("No pre-trained model found. Please train a model first.")
 
-# Define Custom Dataset
-class ReviewDataset(Dataset):
-    def __init__(self, tokenized_data, target_labels):
-        self.data = tokenized_data
-        self.labels = torch.tensor(target_labels)
+# Train a New Model
+if st.sidebar.button("Train Model"):
+    if train_file and test_file:
+        # Load datasets
+        train_data = pd.read_csv(train_file)
+        test_data = pd.read_csv(test_file)
 
-    def __len__(self):
-        return len(self.labels)
+        # Verify dataset structure
+        if 'Sentence' not in train_data.columns or 'Polarity' not in train_data.columns:
+            st.error("Training data must contain 'Sentence' and 'Polarity' columns.")
+        elif 'Sentence' not in test_data.columns or 'Polarity' not in test_data.columns:
+            st.error("Test data must contain 'Sentence' and 'Polarity' columns.")
+        else:
+            # Preprocessing: Normalize text
+            def normalize_text(text):
+                return text.lower().strip()
 
-    def __getitem__(self, index):
-        inputs = {key: val[index] for key, val in self.data.items()}
-        inputs['labels'] = self.labels[index]
-        return inputs
+            train_data['Sentence'] = train_data['Sentence'].apply(normalize_text)
+            test_data['Sentence'] = test_data['Sentence'].apply(normalize_text)
 
-# Step 1: Upload Data
-uploaded_train_file = st.file_uploader("Upload Training Dataset (CSV)", type="csv")
-uploaded_test_file = st.file_uploader("Upload Test Dataset (CSV)", type="csv")
+            X_train = train_data['Sentence']
+            y_train = train_data['Polarity']
+            X_test = test_data['Sentence']
+            y_test = test_data['Polarity']
 
-if uploaded_train_file and uploaded_test_file:
-    # Load datasets
-    train_data = pd.read_csv(uploaded_train_file)
-    test_data = pd.read_csv(uploaded_test_file)
+            # Vectorize text using TF-IDF
+            tfidf = TfidfVectorizer(max_features=10000, stop_words='english', ngram_range=(1, 2))
+            X_train_tfidf = tfidf.fit_transform(X_train)
+            X_test_tfidf = tfidf.transform(X_test)
 
-    st.write("Training Dataset Preview:")
-    st.dataframe(train_data.head())
-    st.write("Test Dataset Preview:")
-    st.dataframe(test_data.head())
+            # Logistic Regression with Grid Search
+            st.write("Tuning Logistic Regression...")
+            param_grid = {'C': [0.01, 0.1, 1, 10, 100]}
+            grid_search = GridSearchCV(LogisticRegression(max_iter=500, random_state=42, class_weight='balanced'), param_grid, cv=5)
+            grid_search.fit(X_train_tfidf, y_train)
+            best_logistic = grid_search.best_estimator_
 
-    # Prepare data
-    train_texts = train_data["Sentence"].astype(str).tolist()
-    train_labels = train_data["Polarity"].tolist()
-    test_texts = test_data["Sentence"].astype(str).tolist()
-    test_labels = test_data["Polarity"].tolist()
+            # SVM with Probabilities Enabled
+            st.write("Configuring SVM...")
+            svm_model = SVC(probability=True, random_state=42, kernel='linear', class_weight='balanced')
 
-    # Tokenize
-    max_seq_length = 50
-    train_encoded = tokenizer(
-        train_texts,
-        truncation=True,
-        padding="max_length",
-        max_length=max_seq_length,
-        return_tensors="pt"
-    )
-    test_encoded = tokenizer(
-        test_texts,
-        truncation=True,
-        padding="max_length",
-        max_length=max_seq_length,
-        return_tensors="pt"
-    )
+            # Create an ensemble Voting Classifier with 'soft' voting
+            st.write("Training ensemble model...")
+            ensemble_model = VotingClassifier(estimators=[
+                ('lr', best_logistic),
+                ('svm', svm_model)
+            ], voting='soft')
 
-    # DataLoader
-    train_dataset = ReviewDataset(train_encoded, train_labels)
-    test_dataset = ReviewDataset(test_encoded, test_labels)
-    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=16)
+            # Train the ensemble model
+            ensemble_model.fit(X_train_tfidf, y_train)
 
-    # Step 2: Train Model
-    optimizer = AdamW(model.parameters(), lr=2e-5)
+            # Evaluate the model
+            y_pred = ensemble_model.predict(X_test_tfidf)
+            accuracy = accuracy_score(y_test, y_pred)
+            st.write(f"Ensemble Model Accuracy: {accuracy:.2f}")
 
-    def train_epoch(model, loader, optimizer):
-        model.train()
-        total_loss = 0
-        for batch in loader:
-            optimizer.zero_grad()
-            input_ids = batch['input_ids'].to(device_type)
-            attention_mask = batch['attention_mask'].to(device_type)
-            labels = batch['labels'].to(device_type)
-            outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
-            loss = outputs.loss
-            loss.backward()  # Backpropagation
-            optimizer.step()  # Update weights
-            total_loss += loss.item()
-        return total_loss / len(loader)
+            # Display Classification Report as a Table
+            report = classification_report(y_test, y_pred, target_names=['Negative', 'Positive'], output_dict=True)
+            report_df = pd.DataFrame(report).transpose()
+            st.write("### Classification Report")
+            st.dataframe(report_df.style.format("{:.2f}"))
 
-    if st.button("Train BERT Model"):
-        epochs = 3
-        for epoch in range(epochs):
-            avg_loss = train_epoch(model, train_loader, optimizer)
-            st.write(f"Epoch {epoch + 1}: Loss = {avg_loss:.4f}")
+            # Confusion Matrix
+            st.write("### Confusion Matrix")
+            conf_matrix = confusion_matrix(y_test, y_pred)
+            fig, ax = plt.subplots()
+            sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=['Negative', 'Positive'], yticklabels=['Negative', 'Positive'])
+            plt.xlabel('Predicted')
+            plt.ylabel('True')
+            st.pyplot(fig)
 
-    # Step 3: Evaluate Model
-    def evaluate_model(model, loader):
-        model.eval()
-        all_preds, all_labels = [], []
-        with torch.no_grad():
-            for batch in loader:
-                input_ids = batch['input_ids'].to(device_type)
-                attention_mask = batch['attention_mask'].to(device_type)
-                labels = batch['labels'].to(device_type)
+            # Class Distribution
+            st.write("### Class Distribution in Test Data")
+            class_counts = pd.Series(y_test).value_counts()
+            fig, ax = plt.subplots()
+            class_counts.plot(kind='bar', color=['blue', 'orange'], alpha=0.7)
+            plt.title('Class Distribution')
+            plt.xlabel('Class')
+            plt.ylabel('Count')
+            plt.xticks(ticks=[0, 1], labels=['Negative', 'Positive'], rotation=0)
+            st.pyplot(fig)
 
-                outputs = model(input_ids, attention_mask=attention_mask)
-                preds = torch.argmax(outputs.logits, dim=1)
+            # Confidence Distribution
+            st.write("### Confidence Distribution")
+            confidence_scores = ensemble_model.predict_proba(X_test_tfidf).max(axis=1)
+            fig, ax = plt.subplots()
+            sns.histplot(confidence_scores, bins=10, kde=True, color='green')
+            plt.title('Confidence Score Distribution')
+            plt.xlabel('Confidence')
+            plt.ylabel('Frequency')
+            st.pyplot(fig)
 
-                all_preds.extend(preds.cpu().numpy())  # Ensure numpy array
-                all_labels.extend(labels.cpu().numpy())  # Ensure numpy array
-        return np.array(all_preds), np.array(all_labels)
-
-
-    preds, labels = None, None
-    if st.button("Evaluate Model"):
-        preds, labels = evaluate_model(model, test_loader)
-        acc = accuracy_score(labels, preds)
-        f1 = f1_score(labels, preds)
-        st.write(f"Test Accuracy: {acc:.2f}")
-        st.write(f"F1 Score: {f1:.2f}")
-        st.text("Classification Report:")
-        st.text(classification_report(labels, preds))
-
-        # Confusion Matrix
-        cm = confusion_matrix(labels, preds)
-        st.write("Confusion Matrix:")
-        st.write(cm)
-
-    # Step 4: Visualizations
-    if preds is not None:
-        # Convert to numpy array (if not already)
-        preds = np.array(preds)
-
-        # Positive and negative comments
-        positive_comments = " ".join(test_data.iloc[np.atleast_1d(preds == 1).nonzero()[0]]['Sentence'])
-        negative_comments = " ".join(test_data.iloc[np.atleast_1d(preds == 0).nonzero()[0]]['Sentence'])
-
-        st.subheader("Word Cloud: Positive Comments")
-        wordcloud_positive = WordCloud(background_color='white').generate(positive_comments)
-        plt.figure(figsize=(10, 6))
-        plt.imshow(wordcloud_positive, interpolation='bilinear')
-        plt.axis('off')
-        st.pyplot(plt)
-
-        st.subheader("Word Cloud: Negative Comments")
-        wordcloud_negative = WordCloud(background_color='white').generate(negative_comments)
-        plt.figure(figsize=(10, 6))
-        plt.imshow(wordcloud_negative, interpolation='bilinear')
-        plt.axis('off')
-        st.pyplot(plt)
+            # Save the ensemble model and vectorizer
+            joblib.dump(tfidf, vectorizer_file)
+            joblib.dump(ensemble_model, model_file)
+            st.success("Ensemble model and vectorizer saved successfully.")
     else:
-        st.warning("Please evaluate the model first to generate visualizations.")
+        st.error("Please upload both training and test datasets to train the model.")
 
-    # Step 5: Predict Sentiment
-    user_input = st.text_area("Enter text to classify sentiment:")
-    if st.button("Predict Sentiment"):
-        model.eval()
-        encoding = tokenizer(
-            user_input,
-            truncation=True,
-            padding="max_length",
-            max_length=max_seq_length,
-            return_tensors="pt"
-        )
-        input_ids = encoding['input_ids'].to(device_type)
-        attention_mask = encoding['attention_mask'].to(device_type)
-        with torch.no_grad():
-            outputs = model(input_ids, attention_mask=attention_mask)
-            prediction = torch.argmax(outputs.logits, dim=1).item()
-        sentiment = "Positive" if prediction == 1 else "Negative"
-        st.write(f"Predicted Sentiment: {sentiment}")
+# Prediction Section
+st.header("Sentiment Prediction")
+user_input = st.text_area("Enter text for sentiment prediction", "")
+
+if st.button("Predict Sentiment"):
+    if tfidf is None or model is None:
+        st.error("No pre-trained model found. Please train a model first.")
+    elif user_input.strip():
+        # Vectorize the input
+        input_tfidf = tfidf.transform([user_input])
+
+        # Predict sentiment and confidence
+        prediction = model.predict(input_tfidf)[0]
+        prediction_proba = model.predict_proba(input_tfidf)
+        confidence = max(prediction_proba[0])
+
+        # Display result
+        st.write(f"Predicted Sentiment: {'Positive' if prediction == 1 else 'Negative'}")
+        st.write(f"Confidence: {confidence:.2f}")
+    else:
+        st.error("Please enter some text for prediction.")
