@@ -28,7 +28,7 @@ def load_model_and_trends(pkl_file_url):
 
 
 # Define path to the compressed pickle file
-compressed_pkl_file_path = "https://github.com/pranit204/Machine-Learning-and-AI/blob/main/Neural_Network_Application_Toronto_Crime_Analysis_and_Forecasting/lstm_model.pkl.gz"
+compressed_pkl_file_path = "./Neural_Network_Application_Toronto_Crime_Analysis_and_Forecasting/lstm_model.pkl.gz"
 
 # Streamlit App
 def main():
