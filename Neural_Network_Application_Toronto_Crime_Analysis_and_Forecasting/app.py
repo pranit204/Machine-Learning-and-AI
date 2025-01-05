@@ -91,7 +91,7 @@ def main():
             ax=ax,
             palette="viridis"
         )
-        ax.set_title(f"Top 10 Most Notorious Neighborhoods for '{selected_offense_viz2}'")
+        ax.set_title(f"Top 10 Most Notorious Neighborhoods for offence - '{selected_offense_viz2}'")
         ax.set_xlabel("Crime Count")
         ax.set_ylabel("Neighborhood")
         st.pyplot(fig)
