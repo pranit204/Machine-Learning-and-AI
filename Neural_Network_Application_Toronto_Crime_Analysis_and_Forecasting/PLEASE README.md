@@ -1,24 +1,19 @@
 Crime Forecasting Dashboard with LSTM Neural Networks
 🚓 Project Overview
 The Crime Forecasting Dashboard is a powerful analytics and prediction platform built to analyze crime trends across neighborhoods, forecast future crime rates using LSTM Neural Networks, and provide actionable insights to law enforcement agencies, urban planners, and policymakers. By leveraging historical crime data, the dashboard empowers users to identify areas of concern and plan interventions to make neighborhoods safer.
-
 📊 Key Features
 Exploratory Data Analysis (EDA):
-
 Visualizations of yearly crime trends by offense types and neighborhoods.
 Identification of the top 10 neighborhoods with the highest crime rates.
 Crime Prediction with LSTM Neural Networks:
-
 Utilizes Long Short-Term Memory (LSTM) models for time series forecasting.
 Predicts future crime trends in each neighborhood based on historical data.
 Calculates percentage changes in crime for each neighborhood over a given period.
 Actionable Insights:
-
 Lists the top 10 neighborhoods with the highest projected crime increases.
 Highlights the top 10 neighborhoods with the highest projected crime decreases.
 Offers dynamic crime forecasts for the next 180 days.
 Interactive Dashboard:
-
 Built with Streamlit for user-friendly visualization and interactivity.
 Enables users to explore data, analyze trends, and visualize forecasts with minimal effort.
 📂 Project Structure
@@ -71,7 +66,7 @@ Dynamic plots with Seaborn and Matplotlib.
 Interactive dashboards with Streamlit.
 📜 Key Results
 Model Performance:
-Achieved an overall RMSE of <INSERT RMSE> on test data.
+Achieved an overall RMSE of 89.27 on test data.
 Top 10 Neighborhoods with Predicted Increases:
 Example: Neighborhood X (15.2%), Neighborhood Y (13.6%), etc.
 Top 10 Neighborhoods with Predicted Decreases:
