@@ -1,4 +1,6 @@
-Crime Forecasting Dashboard with LSTM Neural Networks
+**Crime Forecasting Dashboard with LSTM Neural Networks**
+
+
 🚓 Project Overview
 The Crime Forecasting Dashboard is a powerful analytics and prediction platform built to analyze crime trends across neighborhoods, forecast future crime rates using LSTM Neural Networks, and provide actionable insights to law enforcement agencies, urban planners, and policymakers. By leveraging historical crime data, the dashboard empowers users to identify areas of concern and plan interventions to make neighborhoods safer.
 📊 Key Features
