@@ -8,21 +8,12 @@ import matplotlib.pyplot as plt
 # Utility Functions
 def load_model_and_trends(pkl_file):
     """
-    Load the trained model, scaler, and trends from the pickle file.
+    Load the trained model, scaler, trends, and preprocessed data from the pickle file.
     """
     with open(pkl_file, "rb") as f:
         data = pickle.load(f)
-    return data["model"], data["scaler"], data.get("trends", {})
+    return data["model"], data["scaler"], data.get("trends", {}), data.get("preprocessed_data", None)
 
-def get_latest_csv(data_directory, file_prefix):
-    """
-    Retrieves the latest CSV file with the specified prefix in the given directory.
-    """
-    files = [f for f in os.listdir(data_directory) if f.startswith(file_prefix) and f.endswith('.csv')]
-    if not files:
-        raise FileNotFoundError("No preprocessed CSV files found. Please run Preprocess.py first.")
-    latest_file = max(files, key=lambda f: os.path.getctime(os.path.join(data_directory, f)))
-    return os.path.join(data_directory, latest_file)
 
 # Define paths and file prefix
 data_directory = "/Users/pranitsanghavi/PycharmProjects/PythonProject/Toronto_Police_Service_Major_Crime_Indicators/Data"
@@ -30,26 +21,21 @@ file_prefix = "preprocessed_data_"
 pkl_file_path = "/Toronto_Police_Service_Major_Crime_Indicators/ML/lstm_model.pkl"
 
 # Streamlit App
+# Streamlit App
 def main():
     st.title("🚔 Toronto Crime Analysis and Forecasting Dashboard")
 
-    # Load the model and trends
+    # Load the model, trends, and preprocessed data
     try:
-        model, scaler, trends = load_model_and_trends(pkl_file_path)
+        model, scaler, trends, df = load_model_and_trends(pkl_file_path)
+        if df is None:
+            st.error("Preprocessed data missing in the pickle file. Ensure the model script saves preprocessed data.")
+            return
     except FileNotFoundError:
         st.error("Model file not found. Please ensure the model is trained and saved properly.")
         return
     except KeyError:
         st.error("Trends data missing in the pickle file. Ensure the model script saves trends.")
-        return
-
-    # Load the latest preprocessed data
-    try:
-        latest_csv = get_latest_csv(data_directory, file_prefix)
-        df = pd.read_csv(latest_csv)
-        st.sidebar.success(f"Loaded data from: {latest_csv}")
-    except Exception as e:
-        st.error(f"Error loading data: {e}")
         return
 
     # Ensure datetime columns are properly parsed
