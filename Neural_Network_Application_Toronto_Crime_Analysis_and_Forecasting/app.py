@@ -25,7 +25,7 @@ compressed_pkl_file_path = "./Neural_Network_Application_Toronto_Crime_Analysis_
 
 # Streamlit App
 def main():
-    st.title("🚔 Toronto Crime Analysis and Forecasting Dashboard")
+    st.title("🚔 Toronto Crime Analysis and Forecasting Dashboard Powered by Neural Networks ")
 
     # Load the model, trends, and preprocessed data
     try:
