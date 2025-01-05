@@ -87,13 +87,19 @@ def train_lstm_model(model, X, y, epochs=3, batch_size=16, validation_split=0.2)
     return history
 
 
-def save_model_and_trends(model, scaler, trends, output_file="lstm_model.pkl"):
+def save_model_and_data(model, scaler, trends, df, file_path="lstm_model.pkl"):
     """
-    Save the trained model, scaler, and computed trends to a pickle file.
+    Save the model, scaler, trends, and DataFrame into a single pickle file.
     """
-    with open(output_file, "wb") as f:
-        pickle.dump({"model": model, "scaler": scaler, "trends": trends}, f)
-    print(f"Model, scaler, and trends saved to {output_file}")
+    data_to_save = {
+        "model": model,
+        "scaler": scaler,
+        "trends": trends,
+        "preprocessed_data": df  # Include the preprocessed DataFrame
+    }
+    with open(file_path, "wb") as f:
+        pickle.dump(data_to_save, f)
+    print(f"Model, scaler, trends, and data saved to {file_path}")
 
 
 def evaluate_model(model, X_test, y_test, scaler):
@@ -198,9 +204,9 @@ if __name__ == "__main__":
     future_steps = 180
     trends = calculate_forecast_changes(df, model, scaler, future_steps=future_steps)
 
-    # Save the model, scaler, and trends
+    # Save the model, scaler, and trends, data
     print("Saving the model, scaler, and trends...")
-    save_model_and_trends(model, scaler, trends)
+    save_model_and_data(model, scaler, trends, df)
 
     print(f"Model training complete. RMSE: {rmse}")
     print("Top 10 neighborhoods with increases and decreases saved.")
