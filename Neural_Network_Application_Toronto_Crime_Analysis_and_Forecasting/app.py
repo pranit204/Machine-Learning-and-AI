@@ -4,15 +4,27 @@ import pandas as pd
 import streamlit as st
 import seaborn as sns
 import matplotlib.pyplot as plt
+import io
+import requests
 
 # Utility Functions
-def load_model_and_trends(compressed_pkl_file):
+def load_model_and_trends(pkl_file_url):
     """
-    Load the trained model, scaler, trends, and preprocessed data from the compressed pickle file.
+    Load the trained model, scaler, trends, and preprocessed data from a compressed pickle file.
     """
-    with gzip.open(compressed_pkl_file, "rb") as f:
-        data = pickle.load(f)
-    return data["model"], data["scaler"], data.get("trends", {}), data.get("preprocessed_data", None)
+    try:
+        # Download the compressed file
+        response = requests.get(pkl_file_url)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+
+        # Decompress the content
+        with gzip.GzipFile(fileobj=io.BytesIO(response.content)) as f:
+            data = pickle.load(f)
+
+        return data["model"], data["scaler"], data.get("trends", {}), data.get("preprocessed_data", None)
+
+    except Exception as e:
+        raise FileNotFoundError(f"Error loading compressed model file: {e}")
 
 
 # Define path to the compressed pickle file
