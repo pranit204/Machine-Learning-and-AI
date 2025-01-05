@@ -61,7 +61,7 @@ def main():
 
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.lineplot(data=trend_data, x='occ_year', y='count', marker="o", ax=ax)
-    ax.set_title(f"Yearly Trend of '{selected_offense_viz1} (offence)' in '{selected_neighborhood_viz1} (neighborhood)'")
+    ax.set_title(f"Yearly Trend of 'offence - {selected_offense_viz1}' in 'neighborhood - {selected_neighborhood_viz1}'")
     ax.set_xlabel("Year")
     ax.set_ylabel("Crime Count")
     st.pyplot(fig)
