@@ -118,8 +118,15 @@ def main():
             st.dataframe(decrease_df.style.format({"Percentage Decrease": "{:.2f}%"}))
         else:
             st.info("No data available for neighborhoods with predicted decreases.")
+            
     except Exception as e:
         st.error(f"Error generating predictive insights: {e}")
 
 if __name__ == "__main__":
     main()
+
+
+# Footer signature
+st.markdown("---")
+st.markdown("**Created by [Pranit Sanghavi](https://github.com/pranit204)**")
+st.markdown("Reach out via [LinkedIn](https://www.linkedin.com/in/pranit-sanghavi) or [Email](mailto:pranit.careers@gmail.com).")
