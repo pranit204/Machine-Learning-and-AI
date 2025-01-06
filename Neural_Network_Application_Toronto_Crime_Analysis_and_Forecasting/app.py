@@ -122,6 +122,26 @@ def main():
     except Exception as e:
         st.error(f"Error generating predictive insights: {e}")
 
+# Add details to the sidebar
+st.sidebar.header("Technical Details")
+st.sidebar.markdown("**Model Information:**")
+st.sidebar.write(f"**Model Type:** LSTM Neural Network")
+st.sidebar.write(f"**Evaluation Metric:** RMSE")
+st.sidebar.write(f"**RMSE:** 89.08")  # Replace `rmse` with your actual RMSE variable
+
+st.sidebar.markdown("**Preprocessing Steps:**")
+st.sidebar.write("- Scaling crime count with MinMaxScaler")
+st.sidebar.write("- Sequence length: 365 days")
+st.sidebar.write("- Train/test split: 80/20")
+
+st.sidebar.markdown("**Forecasting:**")
+st.sidebar.write("- Forecast horizon: 30 days")
+st.sidebar.write("- Trends: Top 10 increases/decreases by neighborhood")
+
+st.sidebar.markdown("---")
+st.sidebar.info("Built with 🧠 Neural Networks and 💻 Python")
+
+
 if __name__ == "__main__":
     main()
 
@@ -129,4 +149,3 @@ if __name__ == "__main__":
 # Footer signature
 st.markdown("---")
 st.markdown("**Created by [Pranit Sanghavi](https://github.com/pranit204)**")
-st.markdown("Reach out via [LinkedIn](https://www.linkedin.com/in/pranit-sanghavi) or [Email](mailto:pranit.careers@gmail.com).")
